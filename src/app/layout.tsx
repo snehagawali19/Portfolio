@@ -17,7 +17,7 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Sneha Gawali | AI · Robotics · Engineering",
+  title: "Sneha Gawali | AI & Robotics Engineer",
   description:
     "AI and robotics engineer. MobiGraph, RebalanceRL, IncidentRAG. Bangalore.",
 };
