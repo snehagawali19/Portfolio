@@ -132,3 +132,7 @@ body {
     scroll-behavior: auto;
   }
 }
+
+nextjs-portal {
+  display: none !important;
+}

@@ -1,63 +1,21 @@
 "use client";
 
+import { motion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 import { education, experience, projects } from "@/data/site";
 import { Reveal } from "./reveal";
 
 export function Work() {
   return (
-    <section id="projects" className="relative px-4 pb-32 md:px-8 md:pb-40">
-      <Reveal>
-        <h2 className="mb-20 text-[clamp(1.75rem,5vw,3.42rem)] md:ml-[17%]">
-          Projects
-        </h2>
-      </Reveal>
+    <section id="projects" className="relative">
+      <div className="h-[18vh]" />
+      {projects.map((project, i) => (
+        <ProjectBeat key={project.slug} project={project} index={i} />
+      ))}
+      <div className="h-[24vh]" />
 
-      <ul className="mx-auto flex max-w-[1200px] flex-col gap-28 md:gap-40">
-        {projects.map((project, i) => (
-          <Reveal key={project.slug} delay={i * 0.04}>
-            <li
-              className={`w-full md:w-[min(40vw,600px)] ${
-                project.accent === "right" ? "md:ml-auto md:mr-[7vw]" : "md:ml-[7vw]"
-              }`}
-            >
-              <article className="group relative block">
-                <span className="pc pc-tl" />
-                <span className="pc pc-tr" />
-                <span className="pc pc-bl" />
-                <span className="pc pc-br" />
-                {"href" in project ? (
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute inset-0 z-10"
-                    aria-label={`Open ${project.title}`}
-                  />
-                ) : null}
-                <div className="overflow-hidden">
-                  <ProjectVisual slug={project.slug} title={project.title} />
-                </div>
-                <div className="pt-5 md:absolute md:inset-x-0 md:bottom-0 md:bg-[linear-gradient(to_top,#050505d9_0,#050505d9_104px,transparent_152px)] md:pt-20 md:pr-5 md:pb-5 md:pl-5">
-                  <p className="mb-1.5 text-[0.66rem] tracking-[0.15em] text-[rgb(255_255_255_/_0.55)] uppercase">
-                    {project.kind}
-                  </p>
-                  <h3 className="text-[clamp(1.75rem,2.4vw,2.19rem)] leading-[1.1] text-[var(--color-ink)]">
-                    {project.title}
-                  </h3>
-                  <p className="mt-2 max-w-md text-[0.9rem] leading-relaxed font-light text-[var(--color-soft)]">
-                    {project.summary}
-                  </p>
-                  <p className="mt-3 text-[0.66rem] tracking-[0.12em] text-[var(--color-faint)] uppercase">
-                    {project.stack}
-                  </p>
-                </div>
-              </article>
-            </li>
-          </Reveal>
-        ))}
-      </ul>
-
-      <Reveal className="mx-auto mt-32 max-w-[900px] md:mt-40">
+      <Reveal className="relative z-[6] mx-auto max-w-[900px] px-4 pb-32 md:px-8 md:pb-40">
+        <h2 className="mb-16 text-[clamp(1.75rem,5vw,3.42rem)]">Experience</h2>
         <ul className="space-y-12">
           {experience.map((item) => (
             <li key={item.org} className="grid grid-cols-1 gap-3 md:grid-cols-12 md:gap-6">
@@ -83,6 +41,82 @@ export function Work() {
         </p>
       </Reveal>
     </section>
+  );
+}
+
+function ProjectBeat({
+  project,
+  index,
+}: {
+  project: (typeof projects)[number];
+  index: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.92", "end 0.08"],
+  });
+  const opacity = useTransform(scrollYProgress, [0, 0.16, 0.72, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.16, 0.72, 1], [90, 0, 0, -56]);
+  const x = useTransform(
+    scrollYProgress,
+    [0, 0.16],
+    [project.accent === "right" ? 64 : -64, 0],
+  );
+  const scale = useTransform(scrollYProgress, [0, 0.16, 0.72, 1], [0.92, 1, 1, 0.97]);
+  const titleOp = useTransform(scrollYProgress, [0, 0.12, 0.28, 0.42], [0, 1, 1, 0]);
+  const events = useTransform(opacity, (value) => (value > 0.2 ? "auto" : "none"));
+
+  return (
+    <div ref={ref} className="relative h-[170vh] md:h-[180vh]">
+      {index === 0 ? (
+        <motion.h2
+          style={{ opacity: titleOp }}
+          className="pointer-events-none fixed top-[18%] left-[8%] z-[6] text-[clamp(1.75rem,5vw,3.42rem)] md:left-[17%]"
+        >
+          Projects
+        </motion.h2>
+      ) : null}
+      <div className="pointer-events-none fixed inset-0 z-[5] flex items-end justify-center px-4 pb-[8vh] md:items-center md:px-0 md:pb-0">
+        <motion.article
+          style={{ opacity, y, x, scale, pointerEvents: events }}
+          className={`pointer-events-auto group relative w-full md:w-[min(40vw,600px)] ${
+            project.accent === "right" ? "md:ml-auto md:mr-[7vw]" : "md:mr-auto md:ml-[7vw]"
+          }`}
+        >
+          <span className="pc pc-tl" />
+          <span className="pc pc-tr" />
+          <span className="pc pc-bl" />
+          <span className="pc pc-br" />
+          {"href" in project ? (
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noreferrer"
+              className="absolute inset-0 z-10"
+              aria-label={`Open ${project.title}`}
+            />
+          ) : null}
+          <div className="overflow-hidden">
+            <ProjectVisual slug={project.slug} title={project.title} />
+          </div>
+          <div className="pt-5 md:absolute md:inset-x-0 md:bottom-0 md:bg-[linear-gradient(to_top,#050505d9_0,#050505d9_104px,transparent_152px)] md:pt-20 md:pr-5 md:pb-5 md:pl-5">
+            <p className="mb-1.5 text-[0.66rem] tracking-[0.15em] text-[rgb(255_255_255_/_0.55)] uppercase">
+              {project.kind}
+            </p>
+            <h3 className="text-[clamp(1.75rem,2.4vw,2.19rem)] leading-[1.1] text-[var(--color-ink)]">
+              {project.title}
+            </h3>
+            <p className="mt-2 max-w-md text-[0.9rem] leading-relaxed font-light text-[var(--color-soft)]">
+              {project.summary}
+            </p>
+            <p className="mt-3 text-[0.66rem] tracking-[0.12em] text-[var(--color-faint)] uppercase">
+              {project.stack}
+            </p>
+          </div>
+        </motion.article>
+      </div>
+    </div>
   );
 }
 

@@ -1,69 +1,34 @@
 "use client";
 
-import { useScroll, useTransform, motion, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { constellation, site } from "@/data/site";
+import { site } from "@/data/site";
 
 export function About() {
-  const reduce = useReducedMotion() ?? false;
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end start"],
   });
+  const y = useTransform(scrollYProgress, [0, 1], ["8vh", "82vh"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.06, 0.82, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.12, 0.8, 1], [0.45, 1, 1.15, 0.3]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 48]);
 
   return (
-    <section
-      id="about"
-      ref={ref}
-      className="relative min-h-[160vh] md:min-h-[180vh]"
-    >
-      <div className="sticky top-0 flex min-h-[100dvh] items-center overflow-hidden px-4 md:px-8">
+    <section id="about" ref={ref} className="relative h-[220vh] md:h-[240vh]">
+      <div className="pointer-events-none sticky top-0 min-h-[100dvh] overflow-hidden">
         <p className="sr-only">{site.about}</p>
-        {constellation.map((word, i) => (
-          <Word
-            key={word.text}
-            word={word}
-            index={i}
-            progress={scrollYProgress}
-            reduce={reduce}
-          />
-        ))}
+        <motion.svg
+          data-star
+          viewBox="0 0 64 64"
+          style={{ y, opacity, scale, rotate }}
+          className="absolute left-1/2 z-[4] h-16 w-16 -translate-x-1/2 fill-[var(--color-em-soft)] drop-shadow-[0_0_28px_rgb(46_230_160_/_0.55)] md:h-[5.5rem] md:w-[5.5rem]"
+          aria-hidden
+        >
+          <path d="M32 2 L38 26 L62 32 L38 38 L32 62 L26 38 L2 32 L26 26 Z" />
+        </motion.svg>
       </div>
     </section>
-  );
-}
-
-function Word({
-  word,
-  index,
-  progress,
-  reduce,
-}: {
-  word: (typeof constellation)[number];
-  index: number;
-  progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  reduce: boolean;
-}) {
-  const start = 0.08 + index * 0.07;
-  const opacity = useTransform(progress, [start, start + 0.08, start + 0.22], [0, 1, 0.15]);
-  const y = useTransform(progress, [start, start + 0.08], [24, 0]);
-  const filter = useTransform(progress, [start, start + 0.08], ["blur(8px)", "blur(0px)"]);
-
-  return (
-    <motion.p
-      style={
-        reduce
-          ? { left: word.x, top: word.y }
-          : { opacity, y, filter, left: word.x, top: word.y }
-      }
-      className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap max-md:!left-1/2 ${
-        word.kind === "serif"
-          ? "serif text-[clamp(1.75rem,5.2vw,4.27rem)] text-[var(--color-em)]"
-          : "text-[clamp(1.25rem,2.4vw,2.19rem)] font-medium text-[var(--color-ink)]"
-      }`}
-    >
-      {word.text}
-    </motion.p>
   );
 }

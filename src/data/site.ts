@@ -15,20 +15,12 @@ export const site = {
   subline: "I connect models with motors, sensors, and real constraints.",
   about:
     "Robotics and AI engineer at VTU. I build systems that sense the room, make a decision, and move with intent. Graph optimization, deep RL, and offline RAG, shipped with real constraints.",
-  loaderWords: ["Models", "Graph", "Curiosity", "RAG"],
 } as const;
 
 export const nav = [
   { href: "#about", label: "About", id: "about" },
   { href: "#projects", label: "Projects", id: "projects" },
   { href: "#contact", label: "Contact", id: "contact" },
-] as const;
-
-export const constellation = [
-  { text: "Graph", kind: "serif" as const, x: "17%", mx: "50%", y: "18%" },
-  { text: "Curiosity", kind: "serif" as const, x: "81%", mx: "50%", y: "38%" },
-  { text: "PPO", kind: "sans" as const, x: "18%", mx: "50%", y: "58%" },
-  { text: "RAG", kind: "serif" as const, x: "80%", mx: "50%", y: "78%" },
 ] as const;
 
 export const projects = [

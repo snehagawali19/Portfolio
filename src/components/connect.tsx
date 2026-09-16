@@ -21,7 +21,7 @@ export function Connect() {
   return (
     <section
       id="contact"
-      className="relative flex min-h-[100dvh] flex-col items-center justify-center px-[6vw] py-32 text-center"
+      className="relative z-[6] flex min-h-[100dvh] flex-col items-center justify-center px-[6vw] py-32 text-center"
     >
       <Reveal>
         <p className="serif mb-8 text-[clamp(1.4rem,3.6vw,2.73rem)] text-[var(--color-soft)]">
