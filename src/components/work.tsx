@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUpRight } from "@phosphor-icons/react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { education, experience, projects } from "@/data/site";
@@ -98,7 +99,11 @@ function ProjectBeat({
             />
           ) : null}
           <div className="overflow-hidden">
-            <ProjectVisual slug={project.slug} title={project.title} />
+            <ProjectVisual
+              slug={project.slug}
+              title={project.title}
+              open={"href" in project}
+            />
           </div>
           <div className="pt-5 md:absolute md:inset-x-0 md:bottom-0 md:bg-[linear-gradient(to_top,#050505d9_0,#050505d9_104px,transparent_152px)] md:pt-20 md:pr-5 md:pb-5 md:pl-5">
             <p className="mb-1.5 text-[0.66rem] tracking-[0.15em] text-[rgb(255_255_255_/_0.55)] uppercase">
@@ -120,7 +125,15 @@ function ProjectBeat({
   );
 }
 
-function ProjectVisual({ slug, title }: { slug: string; title: string }) {
+function ProjectVisual({
+  slug,
+  title,
+  open,
+}: {
+  slug: string;
+  title: string;
+  open?: boolean;
+}) {
   return (
     <div className="relative flex aspect-[16/11] items-center justify-center overflow-hidden bg-[#0c0c0c] bg-[radial-gradient(ellipse_at_30%_20%,rgb(46_230_160_/_0.08),transparent_60%)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]">
       <svg viewBox="0 0 400 275" className="h-full w-full" aria-hidden>
@@ -192,6 +205,14 @@ function ProjectVisual({ slug, title }: { slug: string; title: string }) {
           </>
         ) : null}
       </svg>
+      {open ? (
+        <span className="pointer-events-none absolute right-3 bottom-3 z-[2] inline-flex items-center gap-2 rounded-full border border-[rgb(46_230_160_/_0.4)] bg-[rgb(10_10_10_/_0.72)] px-3 py-1.5 text-[0.6rem] tracking-[0.16em] text-[var(--color-em-soft)] uppercase md:top-4 md:right-4 md:bottom-auto">
+          Click to open
+          <span className="grid h-6 w-6 place-items-center rounded-full bg-[rgb(46_230_160_/_0.16)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5 group-hover:-translate-y-px">
+            <ArrowUpRight size={12} weight="light" />
+          </span>
+        </span>
+      ) : null}
       <span className="sr-only">{title}</span>
     </div>
   );
