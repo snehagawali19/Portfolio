@@ -52,6 +52,8 @@ export function Nav() {
       </div>
       <a
         href={site.resume}
+        target="_blank"
+        rel="noreferrer"
         data-magnetic="6"
         className="text-[0.78rem] tracking-[0.08em] text-[var(--color-faint)] transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-white"
       >

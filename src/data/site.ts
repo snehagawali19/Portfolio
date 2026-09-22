@@ -10,7 +10,7 @@ export const site = {
   phone: "+91 8762621757",
   github: "https://github.com/snehagawali19",
   linkedin: "https://www.linkedin.com/in/sneha-gawali-5a70571ba",
-  resume: "/Sneha_resume.pdf",
+  resume: "/projects/RESEUME_AI.pdf",
   tagline: "Sense, decide, move.",
   subline: "I connect models with motors, sensors, and real constraints.",
   aboutHeadline: "I build the layer between the model and the constraint.",
