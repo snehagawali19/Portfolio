@@ -5,7 +5,6 @@ export const site = {
   handle: "sneha://ai",
   role: "AI & Robotics Engineer",
   roleLine: "AI & Robotics Engineer",
-  city: "Bangalore",
   email: "sneha.gawali19@gmail.com",
   phone: "+91 8762621757",
   github: "https://github.com/snehagawali19",
@@ -13,9 +12,13 @@ export const site = {
   resume: "/projects/RESEUME_AI.pdf",
   tagline: "Sense, decide, move.",
   subline: "I connect models with motors, sensors, and real constraints.",
-  aboutHeadline: "I build the layer between the model and the constraint.",
+  aboutHeadline: "I build intelligent systems at the intersection of robotics, AI, and real-world complexity.",
   about:
-    "Robotics and AI engineer in Bangalore. RAG with graph context, PPO for fleet rebalance, live deepfake detection in video calls. Internships at GRAG AI Factory and Rooman Technology. B.E. Robotics and Artificial Intelligence, VTU.",
+    "Robotics & AI Engineer based in Bangalore. Exploring graph-enhanced RAG, reinforcement learning for fleet rebalancing, and real-time deepfake detection.",
+  aboutMeta: [
+    "Previously: GRAG AI Factory · Rooman Technologies",
+    "B.E. in Robotics & Artificial Intelligence, VTU.",
+  ],
 } as const;
 
 export const nav = [

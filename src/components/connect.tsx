@@ -53,7 +53,7 @@ export function Connect() {
         </p>
       </Reveal>
       <footer className="absolute bottom-6 text-[0.66rem] tracking-[0.28em] text-[var(--color-faint)] uppercase">
-        © 2026 {site.name}. AI · Robotics · {site.city}
+        © 2026 {site.name}. AI · Robotics
       </footer>
     </section>
   );

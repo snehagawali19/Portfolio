@@ -7,6 +7,8 @@ type Particle = {
   a: number;
   r: number;
   z: number;
+  u: number;
+  v: number;
   mint: boolean;
   size: number;
 };
@@ -30,10 +32,12 @@ export function Starfield() {
     if (!ctx) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const particles: Particle[] = Array.from({ length: 640 }, (_, i) => ({
+    const particles: Particle[] = Array.from({ length: 900 }, (_, i) => ({
       a: Math.random() * Math.PI * 2,
       r: 0.05 + Math.random() ** 1.65 * 0.95,
       z: Math.random(),
+      u: Math.sqrt(Math.random()),
+      v: Math.random() * Math.PI * 2,
       mint: i % 4 !== 0,
       size: 0.5 + Math.random() * 1.8,
     }));
@@ -69,9 +73,12 @@ export function Starfield() {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
-      const doorH = Math.min(vh * 0.62, 560);
-      const doorW = doorH / 2.6;
-
+      const ringEl = document.getElementById("hero-ring");
+      const ringRect = ringEl?.getBoundingClientRect();
+      const ringD = ringEl?.offsetWidth ?? Math.min(vh * 0.9, 820, window.innerWidth - 32);
+      const ringR = ringD / 2 - 10;
+      const ringDX = ringRect ? ringRect.left + ringRect.width / 2 - cx : 0;
+      const ringDY = ringRect ? ringRect.top + ringRect.height / 2 - cy : 0;
       if (blast > 0.02 && blast < 0.55) {
         const flash = (0.55 - blast) / 0.53;
         const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 90 + blast * 520);
@@ -83,8 +90,8 @@ export function Starfield() {
       }
 
       for (const star of particles) {
-        const doorX = Math.cos(star.a) * (doorW / 2) * star.r;
-        const doorY = Math.sin(star.a) * (doorH / 2) * (0.32 + star.r * 0.68);
+        const doorX = ringDX + Math.cos(star.v) * ringR * star.u + Math.sin(star.a + y * 0.001) * 4;
+        const doorY = ringDY + Math.sin(star.v) * ringR * star.u + Math.cos(star.a * 2 + y * 0.001) * 4;
         const colY = (star.z - 0.5) * vh * 1.4;
         const colX = (star.r - 0.5) * 18 + Math.sin(star.a * 4 + y * 0.0018) * 7;
         const reach = 140 + star.r * 980 + star.z * 220;

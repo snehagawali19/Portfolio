@@ -7,6 +7,7 @@ import { site } from "@/data/site";
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -14,14 +15,24 @@ export function Hero() {
   const fade = useTransform(scrollYProgress, [0, 0.22, 0.55], [1, 0.55, 0]);
   const rise = useTransform(scrollYProgress, [0, 0.6], [0, -90]);
   const door = useTransform(scrollYProgress, [0, 0.18, 0.4], [1, 0.35, 0]);
+  const ringEvents = useTransform(door, (value) => (value > 0.2 ? "auto" : "none"));
 
   return (
     <section id="hero" ref={ref} className="relative h-[280vh]">
-      <div className="sticky top-0 flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden">
+      <div
+        ref={stageRef}
+        className="sticky top-0 flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden"
+      >
         <motion.div
+          id="hero-ring"
           data-star
-          style={{ opacity: door }}
-          className="pointer-events-none absolute top-1/2 left-1/2 z-[1] h-[min(62vh,560px)] w-[calc(min(62vh,560px)/2.6)] -translate-x-1/2 -translate-y-1/2 rounded-[48px] border border-dashed border-[rgb(207_251_233_/_0.28)] shadow-[0_0_22px_rgb(245_245_245_/_0.12)]"
+          drag
+          dragConstraints={stageRef}
+          dragElastic={0.2}
+          dragTransition={{ power: 0.25, timeConstant: 220 }}
+          whileDrag={{ scale: 1.02 }}
+          style={{ opacity: door, pointerEvents: ringEvents, touchAction: "pan-y" }}
+          className="cursor-grab active:cursor-grabbing absolute top-1/2 left-1/2 z-[1] aspect-square w-[min(90vh,820px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-[rgb(207_251_233_/_0.28)] shadow-[0_0_22px_rgb(245_245_245_/_0.12)]"
         />
         <motion.svg
           data-star
@@ -33,7 +44,7 @@ export function Hero() {
           <path d="M32 2 L38 26 L62 32 L38 38 L32 62 L26 38 L2 32 L26 26 Z" />
         </motion.svg>
 
-        <motion.div style={{ opacity: fade, y: rise }} className="relative z-[4] text-center">
+        <motion.div style={{ opacity: fade, y: rise }} className="pointer-events-none relative z-[4] text-center">
           <h1 className="px-4 text-[clamp(2.6rem,11vw,11.5rem)] leading-[0.95] font-extrabold tracking-[0.04em] whitespace-nowrap text-[rgb(255_255_255_/_0.55)] max-[560px]:whitespace-normal">
             {site.heroName}
           </h1>
